@@ -12,17 +12,32 @@ void init(void)
 
 }
 
+/*void DrawSemiCircle(float cx, float cy, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
+    glBegin(GL_LINE_STRIP);
+    glColor4f(red, green, blue, alpha);
+    for(int ii = begindraw; ii < min(num_segments, enddraw); ii++)
+    {
+        float theta = 2.0 * 3.1415926f * float(ii) / float(num_segments);//get the current angle
+
+        float x = r * cosf(theta);//calculate the x component
+        float y = r * sinf(theta);//calculate the y component
+
+        glVertex3f(x + cx, y + cy);//output vertex
+    }
+    glEnd();
+}*/
+
 void DrawCube(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
-    float x1 = -1.0f;
-    float x2 = 1.0f;
-    float y1 = -1.0f;
-    float y2 = -0.8f;
-    float z1 = -1.0f;
-    float z2 = 0.0f;
+    float x1 = 0.0f;
+    float x2 = 2.0f;
+    float y1 = 0.0f;
+    float y2 = 1.0f;
+    float z1 = 0.0f;
+    float z2 = 0.2f;
 
     // clear the drawing buffer.
     glClear(GL_COLOR_BUFFER_BIT);
@@ -36,42 +51,43 @@ void DrawCube(void)
     // rotation about Z axis
     glRotatef(zRotated,0.0,0.0,1.0);
     glBegin(GL_QUADS);        // Draw The Cube Using quads
-        glColor3f(1.0f,1.0f,1.0f);    // Color Blue
-        glVertex3f(x2, y2,z2);    // Top Right Of The Quad (Top)
-        glVertex3f(x1, y2,z2);    // Top Left Of The Quad (Top)
-        glVertex3f(x1, y2,z1);    // Bottom Left Of The Quad (Top)
-        glVertex3f(x2, y2,z1);    // Bottom Right Of The Quad (Top)
+        glColor3f(0.0f,0.0f,0.0f);    // Color Black
+        glVertex3f(x2,y2,z2);    // FRONT
+        glVertex3f(x1,y2,z2);
+        glVertex3f(x1,y1,z2);
+        glVertex3f(x2,y1,z2);
 
-//        glColor3f(0.0f,0.0f,0.0f);
-        glColor3f(0.0f,0.0f,0.0f);    // Color Orange
-        glVertex3f(x2,y1,z1);    // Top Right Of The Quad (Bottom)
-        glVertex3f(x1,y1,z1);    // Top Left Of The Quad (Bottom)
-        glVertex3f(x1,y1,z2);    // Bottom Left Of The Quad (Bottom)
-        glVertex3f(x2,y1,z2);    // Bottom Right Of The Quad (Bottom)
+        glColor3f(1.0f,1.0f,1.0f);    // Color White
+        glVertex3f(x2,y2,z1);    // BACK
+        glVertex3f(x1,y2,z1);
+        glVertex3f(x1,y1,z1);
+        glVertex3f(x2,y1,z1);
 
-        glColor3f(1.0f,1.0f,1.0f);    // Color Red
-        glVertex3f(x2,y2,z1);    // Top Right Of The Quad (Front)
-        glVertex3f(x1,y2,z1);    // Top Left Of The Quad (Front)
-        glVertex3f(x1,y1,z1);    // Bottom Left Of The Quad (Front)
-        glVertex3f(x2,y1,z1);    // Bottom Right Of The Quad (Front)
+        glColor3f(1.0f,1.0f,1.0f);    // Color White
+        glVertex3f(x2, y2,z2);    // RIGHT
+        glVertex3f(x1, y2,z2);
+        glVertex3f(x1, y2,z1);
+        glVertex3f(x2, y2,z1);
 
-        glColor3f(1.0f,1.0f,1.0f);    // Color Yellow
-        glVertex3f(x2,y2,z2);    // Top Right Of The Quad (Back)
-        glVertex3f(x1,y2,z2);    // Top Left Of The Quad (Back)
-        glVertex3f(x1,y1,z2);    // Bottom Left Of The Quad (Back)
-        glVertex3f(x2,y1,z2);    // Bottom Right Of The Quad (Back)
+        glColor3f(1.0f,1.0f,0.0f);    // Color White
+        glVertex3f(x2,y1,z1);    // LEFT
+        glVertex3f(x1,y1,z1);
+        glVertex3f(x1,y1,z2);
+        glVertex3f(x2,y1,z2);
 
-        glColor3f(1.0f,1.0f,1.0f);    // Color Blue
-        glVertex3f(x1,y2, z1);    // Top Right Of The Quad (Left)
-        glVertex3f(x1,y2,z2);    // Top Left Of The Quad (Left)
-        glVertex3f(x1,y1,z2);    // Bottom Left Of The Quad (Left)
-        glVertex3f(x1,y1,z1);    // Bottom Right Of The Quad (Left)
 
-        glColor3f(1.0f,1.0f,1.0f);    // Color Violet
-        glVertex3f(x2,y2,z1);    // Top Right Of The Quad (Right)
-        glVertex3f(x2,y2,z2);    // Top Left Of The Quad (Right)
-        glVertex3f(x2,y1,z2);    // Bottom Left Of The Quad (Right)
-        glVertex3f(x2,y1,z1);    // Bottom Right Of The Quad (Right) - See more at: http://www.codemiles.com/c-opengl-examples/draw-3d-cube-using-opengl-t9018.html#sthash.7pDmCSzZ.dpuf
+
+        glColor3f(1.0f,1.0f,1.0f);    // Color White
+        glVertex3f(x1,y2, z1);   // TOP
+        glVertex3f(x1,y2,z2);
+        glVertex3f(x1,y1,z2);
+        glVertex3f(x1,y1,z1);
+
+        glColor3f(1.0f,1.0f,1.0f);    // Color White
+        glVertex3f(x2,y2,z1);    // BOTTOM
+        glVertex3f(x2,y2,z2);
+        glVertex3f(x2,y1,z2);
+        glVertex3f(x2,y1,z1);
     glEnd();            // End Drawing The Cube
     glFlush();
 }
