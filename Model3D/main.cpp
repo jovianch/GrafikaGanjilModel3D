@@ -28,6 +28,39 @@ void DrawSemiCircleFront(float cx, float cy, float z, float r, int num_segments,
     glEnd();
 }
 
+void DrawMicroUSB() {
+    float x2 = 2.01f;
+    float y1 = 0.43f;
+    float y2 = 0.57f;
+    float z1 = 0.05f;
+    float z2 = 0.15f;
+
+    glBegin(GL_QUADS);
+        glColor3f(0.0f,0.0f,0.f);    // Color White
+        glVertex3f(x2,y2,z1);    // BOTTOM
+        glVertex3f(x2,y2,z2);
+        glVertex3f(x2,y1,z2);
+        glVertex3f(x2,y1,z1);
+    glEnd();            // End Drawing The Cube
+}
+
+void DrawLine(float x1, float x2, float y1, float y2, float z1, float z2) {
+    glBegin(GL_LINES);
+        glColor3f(0.0f, 0.0f, 0.0f);
+        glVertex3f(x1, y1, z1);
+        glVertex3f(x2, y2, z2);
+    glEnd();
+}
+
+void DrawRangka(float x1, float x2, float y1, float y2, float z1, float z2) {
+    DrawLine(x1,x1,y1,y2,z1,z1);
+    DrawLine(x1,x2,y1,y1,z1,z1);
+    DrawLine(x1,x2,y2,y2,z1,z1);
+    DrawLine(x2,x2,y1,y2,z1,z1);
+    // Belum tau akan dipakai atau tidak.
+
+}
+
 void DrawSemiCircleLeft(float x, float cy, float cz, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
     glBegin(GL_TRIANGLE_FAN);
     glColor4f(red, green, blue, alpha);
@@ -139,7 +172,6 @@ void DrawPhone(void)
 
     glMatrixMode(GL_MODELVIEW);
 
-
     // clear the drawing buffer.
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
@@ -154,6 +186,10 @@ void DrawPhone(void)
 
     // DRAW PHONE HERE
     DrawCube(x1, x2, y1, y2, z1, z2);
+    // DrawSemiCircle(0,0,0,1,1000,0,1000,0,0,0,1);
+
+    DrawMicroUSB();
+    DrawRangka(x1, x2, y1, y2, z1, z2);
     DrawJackHeadset();
     DrawVolumeUpDown();
     DrawPower();
