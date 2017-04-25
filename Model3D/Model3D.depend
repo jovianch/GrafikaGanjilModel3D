@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1493048176 source:d:\jovian\semester 6\if3260 - grafika\tugas9\grafikaganjilmodel3d\model3d\main.cpp
+1493079883 source:d:\jovian\semester 6\if3260 - grafika\tugas9\grafikaganjilmodel3d\model3d\main.cpp
 	<GL/glut.h>
 	<cmath>
 	<stdlib.h>
