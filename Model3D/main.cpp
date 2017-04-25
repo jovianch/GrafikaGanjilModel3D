@@ -13,7 +13,7 @@ void init(void)
 
 }
 
-void DrawSemiCircle(float cx, float cy, float z, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
+void DrawSemiCircleFront(float cx, float cy, float z, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
     glBegin(GL_TRIANGLE_FAN);
     glColor4f(red, green, blue, alpha);
     for(int ii = begindraw; ii < enddraw; ii++)
@@ -24,6 +24,36 @@ void DrawSemiCircle(float cx, float cy, float z, float r, int num_segments, int 
         float y = r * sinf(theta);//calculate the y component
 
         glVertex3f(x + cx, y + cy, z);//output vertex
+    }
+    glEnd();
+}
+
+void DrawSemiCircleLeft(float x, float cy, float cz, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
+    glBegin(GL_TRIANGLE_FAN);
+    glColor4f(red, green, blue, alpha);
+    for(int ii = begindraw; ii < enddraw; ii++)
+    {
+        float theta = 2.0 * 3.1415926f * float(ii) / float(num_segments);//get the current angle
+
+        float y = r * cosf(theta);//calculate the x component
+        float z = r * sinf(theta);//calculate the y component
+
+        glVertex3f(x, y+cy, z+cz);//output vertex
+    }
+    glEnd();
+}
+
+void DrawSemiCircleTop(float cx, float y, float cz, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
+    glBegin(GL_TRIANGLE_FAN);
+    glColor4f(red, green, blue, alpha);
+    for(int ii = begindraw; ii < enddraw; ii++)
+    {
+        float theta = 2.0 * 3.1415926f * float(ii) / float(num_segments);//get the current angle
+
+        float x = r * cosf(theta);//calculate the x component
+        float z = r * sinf(theta);//calculate the y component
+
+        glVertex3f(x + cx, y, z + cz);//output vertex
     }
     glEnd();
 }
@@ -48,7 +78,7 @@ void DrawCube(float x1, float x2, float y1, float y2, float z1, float z2) {
         glVertex3f(x1, y2,z1);
         glVertex3f(x2, y2,z1);
 
-        glColor3f(1.0f,1.0f,0.0f);    // Color White
+        glColor3f(1.0f,1.0f,1.0f);    // Color White
         glVertex3f(x2,y1,z1);    // LEFT
         glVertex3f(x1,y1,z1);
         glVertex3f(x1,y1,z2);
@@ -68,6 +98,39 @@ void DrawCube(float x1, float x2, float y1, float y2, float z1, float z2) {
     glEnd();            // End Drawing The Cube
 }
 
+void DrawJackHeadset(){
+    DrawSemiCircleLeft(-0.001f, 0.1f, 0.1f, 0.05f, 100,0,100,0.0f,0.0f,0.0f,0.0f);
+}
+
+void DrawVolumeUpDown(){
+    DrawSemiCircleTop(0.3f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.0f,0.0f,0.0f,0.0f);
+    glBegin(GL_LINE_STRIP);
+        glColor3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.3f, 1.01f, 0.115f);
+        glVertex3f(0.6f, 1.01f, 0.115f);
+    glEnd();
+    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f,100,-20,30,0.0f,0.0f,0.0f,0.0f);
+    glBegin(GL_LINE_STRIP);
+        glColor3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.3f, 1.01f, 0.085f);
+        glVertex3f(0.6f, 1.01f, 0.085f);
+    glEnd();
+}
+
+void DrawPower(){
+    DrawSemiCircleTop(0.3f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.0f,0.0f,0.0f,0.0f);
+    glBegin(GL_LINE_STRIP);
+        glColor3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.3f, 1.01f, 0.115f);
+        glVertex3f(0.6f, 1.01f, 0.115f);
+    glEnd();
+    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f,100,-20,30,0.0f,0.0f,0.0f,0.0f);
+    glBegin(GL_LINE_STRIP);
+        glColor3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.3f, 1.01f, 0.085f);
+        glVertex3f(0.6f, 1.01f, 0.085f);
+    glEnd();
+}
 void DrawPhone(void)
 {
     float x1 = 0.0f;
@@ -96,7 +159,8 @@ void DrawPhone(void)
 
     // DRAW PHONE HERE
     DrawCube(x1, x2, y1, y2, z1, z2);
-    DrawSemiCircle(0,0,0,1,1000,0,1000,0,0,0,1);
+    DrawJackHeadset();
+    DrawVolumeUpDown();
 
     glFlush();
 }
@@ -126,7 +190,7 @@ void reshape(int x, int y)
 }
 
 void render(void) {
-    DrawSemiCircle(0,0,0,1, 1000, 0, 1000, 0,0,0,1);
+    //DrawSemiCircle(0,0,0,1, 1000, 0, 1000, 0,0,0,1);
 }
 
 
