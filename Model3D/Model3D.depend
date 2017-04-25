@@ -6,10 +6,10 @@
 	<iostream>
 	<stdlib.h>
 
-1426322040 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+1491896728 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
 	"freeglut_std.h"
 
-1437529542 c:\program files (x86)\codeblocks\mingw\include\gl\freeglut_std.h
+1491896728 c:\program files (x86)\codeblocks\mingw\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -229,4 +229,11 @@
 1301111164 c:\program files (x86)\codeblocks\mingw\include\gl\glu.h
 	<stddef.h>
 	<GL/gl.h>
+
+1493099354 source:c:\users\ramosjanoah\desktop\grafika\grafikaganjilmodel3d\model3d\main.cpp
+	<GL/glut.h>
+	<cmath>
+	<stdlib.h>
+	<iostream>
+	<stdlib.h>
 

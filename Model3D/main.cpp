@@ -14,6 +14,7 @@ void init(void)
 
 void DrawCube(void)
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     float x1 = -1.0f;
@@ -35,7 +36,7 @@ void DrawCube(void)
     // rotation about Z axis
     glRotatef(zRotated,0.0,0.0,1.0);
     glBegin(GL_QUADS);        // Draw The Cube Using quads
-        glColor3f(1.0f,0.0f,0.0f);    // Color Blue
+        glColor3f(1.0f,1.0f,1.0f);    // Color Blue
         glVertex3f(x2, y2,z2);    // Top Right Of The Quad (Top)
         glVertex3f(x1, y2,z2);    // Top Left Of The Quad (Top)
         glVertex3f(x1, y2,z1);    // Bottom Left Of The Quad (Top)
@@ -107,6 +108,10 @@ int main (int argc, char** argv) {
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(1000, 1000);
     glutCreateWindow(argv[0]);
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    // Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);
     init();
     glutDisplayFunc(DrawCube);
     glutReshapeFunc(reshape);
