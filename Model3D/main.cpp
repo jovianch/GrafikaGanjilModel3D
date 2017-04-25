@@ -136,28 +136,43 @@ void DrawJackHeadset(){
 }
 
 void DrawVolumeUpDown(){
-    DrawSemiCircleTop(0.3f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
+    DrawSemiCircleTop(0.2f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
     glBegin(GL_POLYGON);
     glColor3f(0.5f,0.5f,0.5f);
-    glVertex3f(0.3f, 1.01f, 0.115f);
-    glVertex3f(0.5f, 1.01f, 0.115f);
-    glVertex3f(0.5f, 1.01f, 0.085f);
-    glVertex3f(0.3f, 1.01f, 0.085f);
+    glVertex3f(0.2f, 1.001f, 0.115f);
+    glVertex3f(0.4f, 1.001f, 0.115f);
+    glVertex3f(0.4f, 1.001f, 0.085f);
+    glVertex3f(0.2f, 1.001f, 0.085f);
     glEnd();
-    DrawSemiCircleTop(0.5f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
+    DrawSemiCircleTop(0.4f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
 }
 
 void DrawPower(){
-    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
+    DrawSemiCircleTop(0.5f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
     glBegin(GL_POLYGON);
     glColor3f(0.5f,0.5f,0.5f);
-    glVertex3f(0.6f, 1.01f, 0.115f);
-    glVertex3f(0.7f, 1.01f, 0.115f);
-    glVertex3f(0.7f, 1.01f, 0.085f);
-    glVertex3f(0.7f, 1.01f, 0.085f);
+    glVertex3f(0.5f, 1.001f, 0.115f);
+    glVertex3f(0.6f, 1.001f, 0.115f);
+    glVertex3f(0.6f, 1.001f, 0.085f);
+    glVertex3f(0.5f, 1.001f, 0.085f);
     glEnd();
-    DrawSemiCircleTop(0.7f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
+    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
+}
 
+void DrawSimCard(){
+    DrawSemiCircleTop(0.2f, -0.001f, 0.1f, 0.022f, 100,20,70, 0.0f,0.0f,0.0f,0.0f);
+    glBegin(GL_LINE_STRIP);
+    glColor3f(0.0f,0.0f,0.0f);
+    glVertex3f(0.2f, -0.001f, 0.122f);
+    glVertex3f(0.4f, -0.001f, 0.122f);
+    glEnd();
+    glBegin(GL_LINE_STRIP);
+    glColor3f(0.0f,0.0f,0.0f);
+    glVertex3f(0.4f, -0.001f, 0.078f);
+    glVertex3f(0.2f, -0.001f, 0.078f);
+    glEnd();
+    DrawSemiCircleTop(0.4f, -0.001f, 0.1f, 0.022f,100,-20,30,0.0f,0.0f,0.0f,0.0f);
+    DrawSemiCircleTop(0.39f, -0.001f, 0.1f, 0.005f,100,0,100,0.0f,0.0f,0.0f,0.0f);
 }
 void DrawPhone(void)
 {
@@ -193,6 +208,7 @@ void DrawPhone(void)
     DrawJackHeadset();
     DrawVolumeUpDown();
     DrawPower();
+    DrawSimCard();
     glFlush();
 }
 
