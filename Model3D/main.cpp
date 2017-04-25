@@ -48,7 +48,7 @@ void DrawCube(float x1, float x2, float y1, float y2, float z1, float z2) {
         glVertex3f(x1, y2,z1);
         glVertex3f(x2, y2,z1);
 
-        glColor3f(1.0f,1.0f,0.0f);    // Color White
+        glColor3f(1.0f,1.0f,1.0f);    // Color White
         glVertex3f(x2,y1,z1);    // LEFT
         glVertex3f(x1,y1,z1);
         glVertex3f(x1,y1,z2);
