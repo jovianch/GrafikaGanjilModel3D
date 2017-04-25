@@ -1,262 +1,238 @@
+/*
+    My First OpenGL code
+    Author: Joshua Aditya Kosasih
+*/
+#ifdef __APPLE__
 
+#else
 #include <GL/glut.h>
-#include <cmath>
-#include <stdlib.h>
+#endif // __APPLE__
+
+#include <stdio.h>
 #include <iostream>
-#include <stdlib.h>
-#define GLUT_DISABLE_ATEXIT_HACK
- GLfloat xRotated, yRotated, zRotated;
+#include <cmath>
+#include <string>
+#include <gl/gl.h>
+#include <gl/glext.h>
+#include "SOIL/SOIL.h"
 
-void init(void)
-{
-    glClearColor(0,0,1,0);
+float counter = 0.0;
+GLuint tex_ID;
 
-}
+float tex_u_max = 1.0f;//0.2f;
+float tex_v_max = 1.0f;//0.2f;
+const float ref_mag = 0.1f;
 
-void DrawSemiCircleFront(float cx, float cy, float z, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
-    glBegin(GL_TRIANGLE_FAN);
-    glColor4f(red, green, blue, alpha);
-    for(int ii = begindraw; ii < enddraw; ii++)
+void loadTexture(std::string load_me) {
+    tex_ID = SOIL_load_OGL_texture(
+        load_me.c_str(),
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_POWER_OF_TWO
+        | SOIL_FLAG_MIPMAPS
+        //| SOIL_FLAG_MULTIPLY_ALPHA
+        //| SOIL_FLAG_COMPRESS_TO_DXT
+        | SOIL_FLAG_DDS_LOAD_DIRECT
+        //| SOIL_FLAG_NTSC_SAFE_RGB
+        //| SOIL_FLAG_CoCg_Y
+        //| SOIL_FLAG_TEXTURE_RECTANGLE
+        );
+    if( tex_ID > 0 )
     {
-        float theta = 2.0 * 3.1415926f * float(ii) / float(num_segments);//get the current angle
-
-        float x = r * cosf(theta);//calculate the x component
-        float y = r * sinf(theta);//calculate the y component
-
-        glVertex3f(x + cx, y + cy, z);//output vertex
-    }
-    glEnd();
-}
-
-void DrawMicroUSB() {
-    float x2 = 2.01f;
-    float y1 = 0.43f;
-    float y2 = 0.57f;
-    float z1 = 0.05f;
-    float z2 = 0.15f;
-
-    glBegin(GL_QUADS);
-        glColor3f(0.0f,0.0f,0.f);    // Color White
-        glVertex3f(x2,y2,z1);    // BOTTOM
-        glVertex3f(x2,y2,z2);
-        glVertex3f(x2,y1,z2);
-        glVertex3f(x2,y1,z1);
-    glEnd();            // End Drawing The Cube
-}
-
-void DrawLine(float x1, float x2, float y1, float y2, float z1, float z2) {
-    glBegin(GL_LINES);
-        glColor3f(0.0f, 0.0f, 0.0f);
-        glVertex3f(x1, y1, z1);
-        glVertex3f(x2, y2, z2);
-    glEnd();
-}
-
-void DrawRangka(float x1, float x2, float y1, float y2, float z1, float z2) {
-    DrawLine(x1,x1,y1,y2,z1,z1);
-    DrawLine(x1,x2,y1,y1,z1,z1);
-    DrawLine(x1,x2,y2,y2,z1,z1);
-    DrawLine(x2,x2,y1,y2,z1,z1);
-    // Belum tau akan dipakai atau tidak.
-
-}
-
-void DrawSemiCircleLeft(float x, float cy, float cz, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
-    glBegin(GL_TRIANGLE_FAN);
-    glColor4f(red, green, blue, alpha);
-    for(int ii = begindraw; ii < enddraw; ii++)
+        glEnable( GL_TEXTURE_2D );
+        glBindTexture( GL_TEXTURE_2D, tex_ID );
+        std::cout << "the loaded texture ID was " << tex_ID << std::endl;
+    } else
     {
-        float theta = 2.0 * 3.1415926f * float(ii) / float(num_segments);//get the current angle
-
-        float y = r * cosf(theta);//calculate the x component
-        float z = r * sinf(theta);//calculate the y component
-
-        glVertex3f(x, y+cy, z+cz);//output vertex
+        glDisable( GL_TEXTURE_2D );
+        std::cout << "Texture loading failed: '" << SOIL_last_result() << "'" << std::endl;
     }
-    glEnd();
 }
 
-void DrawSemiCircleTop(float cx, float y, float cz, float r, int num_segments, int begindraw, int enddraw, float red, float green, float blue, float alpha) {
-    glBegin(GL_TRIANGLE_FAN);
-    glColor4f(red, green, blue, alpha);
-    for(int ii = begindraw; ii < enddraw; ii++)
-    {
-        float theta = 2.0 * 3.1415926f * float(ii) / float(num_segments);//get the current angle
-
-        float x = r * cosf(theta);//calculate the x component
-        float z = r * sinf(theta);//calculate the y component
-
-        glVertex3f(x + cx, y, z + cz);//output vertex
-    }
-    glEnd();
+void bindTexture(int tex_ID) {
+    glBindTexture( GL_TEXTURE_2D, tex_ID );
 }
 
-void DrawCube(float x1, float x2, float y1, float y2, float z1, float z2) {
-    glBegin(GL_QUADS);        // Draw The Cube Using quads
-        glColor3f(0.0f,0.0f,0.0f);    // Color Black
-        glVertex3f(x2,y2,z2);    // FRONT
-        glVertex3f(x1,y2,z2);
-        glVertex3f(x1,y1,z2);
-        glVertex3f(x2,y1,z2);
-
-        glColor3f(1.0f,1.0f,1.0f);    // Color White
-        glVertex3f(x2,y2,z1);    // BACK
-        glVertex3f(x1,y2,z1);
-        glVertex3f(x1,y1,z1);
-        glVertex3f(x2,y1,z1);
-
-        glColor3f(1.0f,1.0f,1.0f);    // Color White
-        glVertex3f(x2, y2,z2);    // RIGHT
-        glVertex3f(x1, y2,z2);
-        glVertex3f(x1, y2,z1);
-        glVertex3f(x2, y2,z1);
-
-        glColor3f(1.0f,1.0f,1.0f);    // Color White
-        glVertex3f(x2,y1,z1);    // LEFT
-        glVertex3f(x1,y1,z1);
-        glVertex3f(x1,y1,z2);
-        glVertex3f(x2,y1,z2);
-
-        glColor3f(1.0f,1.0f,1.0f);    // Color White
-        glVertex3f(x1,y2, z1);   // TOP
-        glVertex3f(x1,y2,z2);
-        glVertex3f(x1,y1,z2);
-        glVertex3f(x1,y1,z1);
-
-        glColor3f(1.0f,1.0f,1.0f);    // Color White
-        glVertex3f(x2,y2,z1);    // BOTTOM
-        glVertex3f(x2,y2,z2);
-        glVertex3f(x2,y1,z2);
-        glVertex3f(x2,y1,z1);
-    glEnd();            // End Drawing The Cube
-}
-
-void DrawJackHeadset(){
-    DrawSemiCircleLeft(-0.001f, 0.1f, 0.1f, 0.05f, 100,0,100,0.0f,0.0f,0.0f,0.0f);
-}
-
-void DrawVolumeUpDown(){
-    DrawSemiCircleTop(0.2f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
-    glBegin(GL_POLYGON);
-    glColor3f(0.5f,0.5f,0.5f);
-    glVertex3f(0.2f, 1.001f, 0.115f);
-    glVertex3f(0.4f, 1.001f, 0.115f);
-    glVertex3f(0.4f, 1.001f, 0.085f);
-    glVertex3f(0.2f, 1.001f, 0.085f);
-    glEnd();
-    DrawSemiCircleTop(0.4f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
-}
-
-void DrawPower(){
-    DrawSemiCircleTop(0.5f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
-    glBegin(GL_POLYGON);
-    glColor3f(0.5f,0.5f,0.5f);
-    glVertex3f(0.5f, 1.001f, 0.115f);
-    glVertex3f(0.6f, 1.001f, 0.115f);
-    glVertex3f(0.6f, 1.001f, 0.085f);
-    glVertex3f(0.5f, 1.001f, 0.085f);
-    glEnd();
-    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
-}
-
-void DrawSimCard(){
-    DrawSemiCircleTop(0.2f, -0.001f, 0.1f, 0.022f, 100,20,70, 0.0f,0.0f,0.0f,0.0f);
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f,0.0f,0.0f);
-    glVertex3f(0.2f, -0.001f, 0.122f);
-    glVertex3f(0.4f, -0.001f, 0.122f);
-    glEnd();
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f,0.0f,0.0f);
-    glVertex3f(0.4f, -0.001f, 0.078f);
-    glVertex3f(0.2f, -0.001f, 0.078f);
-    glEnd();
-    DrawSemiCircleTop(0.4f, -0.001f, 0.1f, 0.022f,100,-20,30,0.0f,0.0f,0.0f,0.0f);
-    DrawSemiCircleTop(0.39f, -0.001f, 0.1f, 0.005f,100,0,100,0.0f,0.0f,0.0f,0.0f);
-}
-void DrawPhone(void)
-{
-    float x1 = 0.0f;
-    float x2 = 2.0f;
-    float y1 = 0.0f;
-    float y2 = 1.0f;
-    float z1 = 0.0f;
-    float z2 = 0.2f;
-
+void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_MODELVIEW);
+    counter += 0.05;
 
-    // clear the drawing buffer.
-    glClear(GL_COLOR_BUFFER_BIT);
+    if(counter > 180) {
+        counter = -180;
+    }
+
+    // kubus
     glLoadIdentity();
-    glTranslatef(0.0,0.0,-10.5);
-    glRotatef(xRotated,1.0,0.0,0.0);
 
-    // rotation about Y axis
-    glRotatef(yRotated,0.0,1.0,0.0);
+    glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+    //glNormal3f( 0.0f, 0.0f, 1.0f );
 
-    // rotation about Z axis
-    glRotatef(zRotated,0.0,0.0,1.0);
+    glRotatef(counter, 0.9, 1, 0.7);
+    // White side - BACK
+    bindTexture(2);
 
-    // DRAW PHONE HERE
-    DrawCube(x1, x2, y1, y2, z1, z2);
-    // DrawSemiCircle(0,0,0,1,1000,0,1000,0,0,0,1);
+    glBegin(GL_POLYGON);
+        glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
 
-    DrawMicroUSB();
-    DrawRangka(x1, x2, y1, y2, z1, z2);
-    DrawJackHeadset();
-    DrawVolumeUpDown();
-    DrawPower();
-    DrawSimCard();
+        glNormal3f( -ref_mag, ref_mag, 1.0f );
+        glTexCoord2f( 0.0f, tex_v_max );
+        glVertex3f(  0.384, -0.75, 0.055 );
+
+        glNormal3f( -ref_mag, -ref_mag, 1.0f );
+        glTexCoord2f( 0.0f, 0.0f );
+        glVertex3f(  0.384,  0.75, 0.055 );
+
+        glNormal3f( ref_mag, -ref_mag, 1.0f );
+        glTexCoord2f( tex_u_max, 0.0f );
+        glVertex3f( -0.384,  0.75, 0.055 );
+
+        glNormal3f( ref_mag, ref_mag, 1.0f );
+        glTexCoord2f( tex_u_max, tex_v_max );
+        glVertex3f( -0.384, -0.75, 0.055 );
+    glEnd();
+    //RIGHT
+    bindTexture(5);
+
+    glBegin(GL_POLYGON);
+        glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+
+        glTexCoord2f( 1, 1 );
+        glVertex3f( 0.384, -0.75, -0.055 );
+
+        glTexCoord2f( 1, 0);
+        glVertex3f( 0.384,  0.75, -0.055 );
+
+        glTexCoord2f( 0, 0 );
+        glVertex3f( 0.384,  0.75,  0.055 );
+
+        glTexCoord2f( 0, 1 );
+        glVertex3f( 0.384, -0.75,  0.055 );
+    glEnd();
+    //TOP
+    bindTexture(3);
+
+    glBegin(GL_POLYGON);
+        glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+
+        glTexCoord2f( tex_u_max, tex_v_max );
+        glVertex3f(  0.384,  0.75,  0.055 );
+
+        glTexCoord2f( tex_u_max, 0.0f );
+        glVertex3f(  0.384,  0.75, -0.055 );
+
+        glTexCoord2f( 0.0f, 0.0f );
+        glVertex3f( -0.384,  0.75, -0.055 );
+
+        glTexCoord2f( 0.0f, tex_v_max);
+        glVertex3f( -0.384,  0.75,  0.055 );
+    glEnd();
+
+    //BOTTOM
+    bindTexture(4);
+
+    glBegin(GL_POLYGON);
+        glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+
+        glTexCoord2f( tex_u_max, 0.0f );
+        glVertex3f(  0.384, -0.75, -0.055 );
+
+        glTexCoord2f( tex_u_max, tex_v_max );
+        glVertex3f(  0.384, -0.75,  0.055 );
+
+        glTexCoord2f( 0.0f, tex_v_max);
+        glVertex3f( -0.384, -0.75,  0.055 );
+
+        glTexCoord2f( 0.0f, 0.0f );
+        glVertex3f( -0.384, -0.75, -0.055 );
+    glEnd();
+    //FRONT
+    bindTexture(1);
+
+    glBegin(GL_POLYGON);
+        glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+
+        glNormal3f( ref_mag, -ref_mag, 1.0f );
+        glTexCoord2f( 0, 1 );
+        glVertex3f(  0.384, -0.75, -0.055 );
+
+        glNormal3f( ref_mag, ref_mag, 1.0f );
+        glTexCoord2f( 1, 1 );
+        glVertex3f(  0.384,  0.75, -0.055 );
+
+        glNormal3f( -ref_mag, ref_mag, 1.0f );
+        glTexCoord2f( 1, 0 );
+        glVertex3f( -0.384,  0.75, -0.055 );
+
+        glNormal3f( -ref_mag, -ref_mag, 1.0f );
+        glTexCoord2f( 0, 0 );
+        glVertex3f( -0.384, -0.75, -0.055 );
+    glEnd();
+
+    //Left
+    bindTexture(6);
+    glBegin(GL_POLYGON);
+        glColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
+
+        glNormal3f( ref_mag, -ref_mag, 1.0f );
+        glTexCoord2f( 0, 1 );
+        glVertex3f( -0.384, -0.75,  0.055 );
+
+        glNormal3f( ref_mag, ref_mag, 1.0f );
+        glTexCoord2f( 1, 1 );
+        glVertex3f( -0.384,  0.75,  0.055 );
+
+        glNormal3f( -ref_mag, ref_mag, 1.0f );
+        glTexCoord2f( 1, 0 );
+        glVertex3f( -0.384,  0.75, -0.055 );
+
+        glNormal3f( -ref_mag, -ref_mag, 1.0f );
+        glTexCoord2f( 0, 0 );
+        glVertex3f( -0.384, -0.75, -0.055 );
+    glEnd();
+
     glFlush();
+    glutSwapBuffers();
 }
 
-
-void animation(void)
-{
-    yRotated += 0.01;
-    xRotated += 0.02;
-    DrawPhone();
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
 }
 
-
-void reshape(int x, int y)
-{
-    if (y == 0 || x == 0) return;  //Nothing is visible then, so return
-    //Set a new projection matrix
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //Angle of view:40 degrees
-    //Near clipping plane distance: 0.5
-    //Far clipping plane distance: 20.0
-
-    gluPerspective(40.0,(GLdouble)x/(GLdouble)y,0.5,20.0);
-    glMatrixMode(GL_MODELVIEW);
-    glViewport(0,0,x,y);  //Use the whole window for rendering
+void initOpenGL() {
+    // color --- r    g    b    alpha
+    glClearColor(1.0, 1.0, 1.0, 1.0);
 }
 
-void render(void) {
-    //DrawSemiCircle(0,0,0,1, 1000, 0, 1000, 0,0,0,1);
-}
+int main(int argc, char **argv) {
 
-
-int main (int argc, char** argv) {
+    //start up freeglut
     glutInit(&argc, argv);
-    //we initizlilze the glut. functions
-    glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-    glutInitWindowPosition(0, 0);
-    glutInitWindowSize(1000, 1000);
-    glutCreateWindow(argv[0]);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowSize(600, 600);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("First OpenGL App");
+
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
-    init();
-    glutDisplayFunc(render);
+
+    initOpenGL();
+
+    loadTexture ("C:\\Users\\alson\\Desktop\\grafika\\GrafikaGanjilModel3D\\Model3D\\tex\\Depan.jpg");
+    loadTexture  ("C:\\Users\\alson\\Desktop\\grafika\\GrafikaGanjilModel3D\\Model3D\\tex\\Belakang.jpg");
+    loadTexture   ("C:\\Users\\alson\\Desktop\\grafika\\GrafikaGanjilModel3D\\Model3D\\tex\\Top.png");
+    loadTexture("C:\\Users\\alson\\Desktop\\grafika\\GrafikaGanjilModel3D\\Model3D\\tex\\Bottom.png");
+    loadTexture ("C:\\Users\\alson\\Desktop\\grafika\\GrafikaGanjilModel3D\\Model3D\\tex\\Right.png");
+    loadTexture  ("C:\\Users\\alson\\Desktop\\grafika\\GrafikaGanjilModel3D\\Model3D\\tex\\Kiri.jpg");
+
+    glutDisplayFunc(display);
+    glutIdleFunc(display);
+
     glutReshapeFunc(reshape);
-    //Set the function for the animation.
-    glutIdleFunc(animation);
+
     glutMainLoop();
+
     return 0;
 }
