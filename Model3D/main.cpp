@@ -103,33 +103,28 @@ void DrawJackHeadset(){
 }
 
 void DrawVolumeUpDown(){
-    DrawSemiCircleTop(0.3f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.0f,0.0f,0.0f,0.0f);
-    glBegin(GL_LINE_STRIP);
-        glColor3f(0.0f,0.0f,0.0f);
-        glVertex3f(0.3f, 1.01f, 0.115f);
-        glVertex3f(0.6f, 1.01f, 0.115f);
+    DrawSemiCircleTop(0.3f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
+    glBegin(GL_POLYGON);
+    glColor3f(0.5f,0.5f,0.5f);
+    glVertex3f(0.3f, 1.01f, 0.115f);
+    glVertex3f(0.5f, 1.01f, 0.115f);
+    glVertex3f(0.5f, 1.01f, 0.085f);
+    glVertex3f(0.3f, 1.01f, 0.085f);
     glEnd();
-    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f,100,-20,30,0.0f,0.0f,0.0f,0.0f);
-    glBegin(GL_LINE_STRIP);
-        glColor3f(0.0f,0.0f,0.0f);
-        glVertex3f(0.3f, 1.01f, 0.085f);
-        glVertex3f(0.6f, 1.01f, 0.085f);
-    glEnd();
+    DrawSemiCircleTop(0.5f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
 }
 
 void DrawPower(){
-    DrawSemiCircleTop(0.3f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.0f,0.0f,0.0f,0.0f);
-    glBegin(GL_LINE_STRIP);
-        glColor3f(0.0f,0.0f,0.0f);
-        glVertex3f(0.3f, 1.01f, 0.115f);
-        glVertex3f(0.6f, 1.01f, 0.115f);
+    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f, 100,20,70, 0.5f,0.5f,0.5f,0.0f);
+    glBegin(GL_POLYGON);
+    glColor3f(0.5f,0.5f,0.5f);
+    glVertex3f(0.6f, 1.01f, 0.115f);
+    glVertex3f(0.7f, 1.01f, 0.115f);
+    glVertex3f(0.7f, 1.01f, 0.085f);
+    glVertex3f(0.7f, 1.01f, 0.085f);
     glEnd();
-    DrawSemiCircleTop(0.6f, 1.001f, 0.1f, 0.015f,100,-20,30,0.0f,0.0f,0.0f,0.0f);
-    glBegin(GL_LINE_STRIP);
-        glColor3f(0.0f,0.0f,0.0f);
-        glVertex3f(0.3f, 1.01f, 0.085f);
-        glVertex3f(0.6f, 1.01f, 0.085f);
-    glEnd();
+    DrawSemiCircleTop(0.7f, 1.001f, 0.1f, 0.015f,100,-20,30,0.5f,0.5f,0.5f,0.0f);
+
 }
 void DrawPhone(void)
 {
@@ -161,7 +156,7 @@ void DrawPhone(void)
     DrawCube(x1, x2, y1, y2, z1, z2);
     DrawJackHeadset();
     DrawVolumeUpDown();
-
+    DrawPower();
     glFlush();
 }
 
